@@ -21,7 +21,7 @@ class ChatsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_application_id
-      @application_id = Application.where(token: params[:application_id]).last.id
+      @application_id = Application.where(token: params[:application_id]).ids[0]
     end
 
     def set_chat_number
