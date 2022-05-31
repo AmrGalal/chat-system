@@ -1,9 +1,9 @@
 class ChatsController < ApplicationController
-  before_action :set_application_id, :set_chat_number, only: %i[ index create ]
+  before_action :set_application_id, :set_chat_number
 
   # GET /chats
   def index
-    @chats = Chat.where(application_id: @application_id).all.as_json(:except => :id)
+    @chats = Chat.where(application_id: @application_id).all.as_json(:except => [:id, :application_id])
     render json: @chats
   end
 
@@ -12,7 +12,7 @@ class ChatsController < ApplicationController
     @chat = Chat.new(application_id: @application_id, number: @chat_number)
 
     if @chat.save
-      render json: @chat.as_json(:except => :id), status: :created
+      render json: @chat.as_json(:except => [:id, :application_id]), status: :created
     else
       render json: @chat.errors, status: :unprocessable_entity
     end
@@ -21,9 +21,7 @@ class ChatsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_application_id
-      @application_id = Application.where(token: params[:application_id])
-      @application_id = @application_id.ids[0]
-      puts @application_id
+      @application_id = Application.where(token: params[:application_id]).last.id
     end
 
     def set_chat_number
@@ -31,7 +29,7 @@ class ChatsController < ApplicationController
       if @chat == nil
         @chat_number = 1
       else
-        @chat_number = @chat.id + 1
+        @chat_number = @chat.number + 1
       end
     end
 
