@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password123
+      MYSQL_DATABASE: chatSchema
+      MYSQL_USER: amr
+      MYSQL_PASSWORD: password123
+    ports:
+       - "3307:3306"
+
+  app:
+    build: .
+    command: bash -c "bash ./init.sh"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    ports:
+      - '3000:3000'
+    environment:
+      DB_NAME: chatSchema
+      DB_USER: amr
+      DB_PASSWORD: password123
+      DB_HOST: db
+      REDIS_HOST: redis
