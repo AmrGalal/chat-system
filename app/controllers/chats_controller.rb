@@ -1,12 +1,18 @@
 class ChatsController < ApplicationController
-  before_action :set_application_id, :set_chat_number, only: %i[ create ]
+  before_action :set_application_id, :set_chat_number, only: %i[ index create ]
+
+  # GET /chats
+  def index
+    @chats = Chat.where(application_id: @application_id).all.as_json(:except => :id)
+    render json: @chats
+  end
 
   # POST /chats
   def create
     @chat = Chat.new(application_id: @application_id, number: @chat_number)
 
     if @chat.save
-      render json: @chat.as_json(:except => :id), status: :created, location: @chat
+      render json: @chat.as_json(:except => :id), status: :created
     else
       render json: @chat.errors, status: :unprocessable_entity
     end
