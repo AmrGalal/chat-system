@@ -10,6 +10,13 @@ services:
     ports:
        - "3307:3306"
 
+  rabbitmq:
+    image: rabbitmq:3.9-management-alpine
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+
   app:
     build: .
     command: bash -c "bash ./init.sh"
@@ -17,6 +24,9 @@ services:
       - .:/app
     depends_on:
       - db
+      - rabbitmq
+      - chatworker
+      - messageworker
     ports:
       - '3000:3000'
     environment:
@@ -25,3 +35,36 @@ services:
       DB_PASSWORD: password123
       DB_HOST: db
       REDIS_HOST: redis
+      RABBITMQ_HOST: rabbitmq
+
+  chatworker:
+    build: .
+    command: rake sneakers:run
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - rabbitmq
+    environment:
+      DB_NAME: chatSchema
+      DB_USER: amr
+      DB_PASSWORD: password123
+      DB_HOST: db
+      RABBITMQ_HOST: rabbitmq
+      WORKERS: ChatWorker
+
+  messageworker:
+    build: .
+    command: rake sneakers:run
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - rabbitmq
+    environment:
+      DB_NAME: chatSchema
+      DB_USER: amr
+      DB_PASSWORD: password123
+      DB_HOST: db
+      RABBITMQ_HOST: rabbitmq
+      WORKERS: MessageWorker

@@ -9,13 +9,16 @@ class ChatsController < ApplicationController
 
   # POST /chats
   def create
-    @chat = Chat.new(application_id: @application_id, number: @chat_number)
 
-    if @chat.save
-      render json: @chat.as_json(:except => [:id, :application_id]), status: :created
-    else
-      render json: @chat.errors, status: :unprocessable_entity
-    end
+    channel = $bunnyConnection.create_channel
+    chatQueue = channel.queue($chatQueueName, durable: true)
+    chatObject = {
+      application_id: @application_id,
+      chat_number: @chat_number
+    }
+    chatQueue.publish(chatObject.to_json, routing_key: chatQueue.name)
+    render :json => {"chat_number": @chat_number}, status: :created
+  
   end
 
   private
@@ -25,12 +28,8 @@ class ChatsController < ApplicationController
     end
 
     def set_chat_number
-      @chat = Chat.where(application_id: @application_id).last
-      if @chat == nil
-        @chat_number = 1
-      else
-        @chat_number = @chat.number + 1
-      end
+      # TODO REDIS operations here
+      @chat_number = 1
     end
 
     # Only allow a list of trusted parameters through.

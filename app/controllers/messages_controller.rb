@@ -10,13 +10,15 @@ class MessagesController < ApplicationController
 
   # POST /messages
   def create
-    @message = Message.new(content: params[:content], chat_id: @chat_id, number: @message_number)
-
-    if @message.save
-      render json: @message.as_json(:except => [:id, :chat_id]), status: :created
-    else
-      render json: @message.errors, status: :unprocessable_entity
-    end
+    channel = $bunnyConnection.create_channel
+    messageQueue = channel.queue($messageQueueName, durable: true)
+    messageObject = {
+      chat_id: @chat_id,
+      message_number: @message_number,
+      content: params[:content]
+    }
+    messageQueue.publish(messageObject.to_json, routing_key: messageQueue.name)
+    render :json => {"message_number": @message_number}, status: :created
   end
 
   private
@@ -24,16 +26,11 @@ class MessagesController < ApplicationController
     def set_chat_id
       application_id = Application.where(token: params[:application_id]).ids[0]
       @chat_id = Chat.where(application_id: application_id, number: params[:chat_id]).ids[0]
-      puts @chat_id
     end
 
     def set_message_number
-      @message = Message.where(chat_id: @chat_id).last
-      if @message == nil
-        @message_number = 1
-      else
-        @message_number = @message.number + 1
-      end
+      #TODO add Redis operation
+      @message_number = 1
     end
     # Only allow a list of trusted parameters through.
     def message_params
