@@ -1,5 +1,6 @@
 class ChatsController < ApplicationController
-  before_action :set_application_id, :set_chat_number
+  before_action :set_application_id
+  before_action :set_chat_number, only: %i[ create ]
 
   # GET /chats
   def index
@@ -28,8 +29,10 @@ class ChatsController < ApplicationController
     end
 
     def set_chat_number
-      # TODO REDIS operations here
-      @chat_number = 1
+      redis_key = "chat_number_for_" + @application_id.to_s
+      $redis.watch(redis_key)
+      @chat_number = $redis.incr(redis_key)
+      $redis.unwatch()
     end
 
     # Only allow a list of trusted parameters through.

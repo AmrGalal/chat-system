@@ -151,6 +151,9 @@ GEM
       zeitwerk (~> 2.5)
     rake (13.0.6)
     rbtree (0.4.5)
+    redis (4.6.0)
+    redis-namespace (1.8.2)
+      redis (>= 3.0.4)
     reline (0.3.1)
       io-console (~> 0.5)
     serverengine (2.0.7)
@@ -187,6 +190,8 @@ DEPENDENCIES
   mysql2 (~> 0.5)
   puma (~> 5.0)
   rails (~> 7.0.3)
+  redis
+  redis-namespace
   sneakers
   tzinfo-data
 

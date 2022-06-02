@@ -1,5 +1,6 @@
 class MessagesController < ApplicationController
-  before_action :set_chat_id, :set_message_number
+  before_action :set_chat_id
+  before_action :set_message_number, only: %i[ create ]
 
   # GET /messages
   def index
@@ -29,8 +30,10 @@ class MessagesController < ApplicationController
     end
 
     def set_message_number
-      #TODO add Redis operation
-      @message_number = 1
+      redis_key = "message_number_for_" + @chat_id.to_s
+      $redis.watch(redis_key)
+      @message_number = $redis.incr(redis_key)
+      $redis.unwatch()
     end
     # Only allow a list of trusted parameters through.
     def message_params

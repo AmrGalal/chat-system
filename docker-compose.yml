@@ -7,6 +7,7 @@ services:
       MYSQL_DATABASE: chatSchema
       MYSQL_USER: amr
       MYSQL_PASSWORD: password123
+    restart: always
     ports:
        - "3307:3306"
 
@@ -17,6 +18,13 @@ services:
       - 5672:5672
       - 15672:15672
 
+  redis:
+    image: redis:5-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "127.0.0.1:6379:6379"
+  
   app:
     build: .
     command: bash -c "bash ./init.sh"
@@ -25,10 +33,10 @@ services:
     depends_on:
       - db
       - rabbitmq
-      - chatworker
-      - messageworker
+      - redis
     ports:
       - '3000:3000'
+    restart: always
     environment:
       DB_NAME: chatSchema
       DB_USER: amr
@@ -45,6 +53,7 @@ services:
     depends_on:
       - db
       - rabbitmq
+    restart: always
     environment:
       DB_NAME: chatSchema
       DB_USER: amr
@@ -61,6 +70,7 @@ services:
     depends_on:
       - db
       - rabbitmq
+    restart: always
     environment:
       DB_NAME: chatSchema
       DB_USER: amr
