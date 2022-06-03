@@ -9,6 +9,11 @@ class MessagesController < ApplicationController
     render json: @messages.as_json(:except => [:id, :chat_id])
   end
 
+  def search
+    @messages = Message.partial_match(params[:content], @chat_id)
+    render json: @messages.as_json(:except => [:id, :chat_id])
+  end
+
   # POST /messages
   def create
     channel = $bunnyConnection.create_channel

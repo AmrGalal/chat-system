@@ -16,6 +16,8 @@ gem "bunny"
 gem "sneakers"
 gem "redis"
 gem "redis-namespace"
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
