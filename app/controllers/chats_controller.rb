@@ -11,13 +11,12 @@ class ChatsController < ApplicationController
   # POST /chats
   def create
 
-    channel = $bunnyConnection.create_channel
-    chatQueue = channel.queue($chatQueueName, durable: true)
     chatObject = {
       application_id: @application_id,
       chat_number: @chat_number
     }
-    chatQueue.publish(chatObject.to_json, routing_key: chatQueue.name)
+    handler = PublishHandler.new
+    handler.send_message($chatQueueName, chatObject)
     render :json => {"chat_number": @chat_number}, status: :created
   
   end

@@ -5,7 +5,6 @@ class MessagesController < ApplicationController
   # GET /messages
   def index
     @messages = Message.where(chat_id: @chat_id)
-
     render json: @messages.as_json(:except => [:id, :chat_id])
   end
 
@@ -16,14 +15,13 @@ class MessagesController < ApplicationController
 
   # POST /messages
   def create
-    channel = $bunnyConnection.create_channel
-    messageQueue = channel.queue($messageQueueName, durable: true)
     messageObject = {
       chat_id: @chat_id,
       message_number: @message_number,
       content: params[:content]
     }
-    messageQueue.publish(messageObject.to_json, routing_key: messageQueue.name)
+    handler = PublishHandler.new
+    handler.send_message($messageQueueName, messageObject)
     render :json => {"message_number": @message_number}, status: :created
   end
 
