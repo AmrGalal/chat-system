@@ -59,7 +59,7 @@ More info about this approach can be found in their documentation [here](https:/
 
 ## Testing Commands
 ### Applications
-### Create applications endpoint
+#### Create application
 ``curl --request POST \
   --url http://localhost:3000/applications/ \
   --header 'Content-Type: application/json' \
@@ -67,17 +67,17 @@ More info about this approach can be found in their documentation [here](https:/
 	"name": "New application"
 }'``
 
-#### List applications endpoint
+#### List applications
 ``curl --request GET \
   --url http://localhost:3000/applications/ \
   --header 'Content-Type: application/json'``
 
-#### Retrieve applications endpoint
+#### Retrieve application
 ``curl --request GET \
-  --url http://localhost:3000/applications/{APPLICATION_TOKEN}/ \
+  --url http://localhost:3000/applications/lva17pp7ub/ \
   --header 'Content-Type: application/json'``
 
-#### Update applications endpoint
+#### Update application
 ``curl --request PATCH \
   --url http://localhost:3000/applications/lva17pp7ub/ \
   --header 'Content-Type: application/json' \
@@ -86,7 +86,32 @@ More info about this approach can be found in their documentation [here](https:/
 }'``
 
 ### Chats
+#### Create Chat
+`curl --request POST \
+  --url http://localhost:3000/applications/lva17pp7ub/chats/ \
+  --header 'Content-Type: application/json'`
+#### List Application's chats
+`curl --request GET \
+  --url http://localhost:3000/applications/lva17pp7ub/chats/`
+
 ### Messages
+#### Create Message
+`curl --request POST \
+  --url http://localhost:3000/applications/lva17pp7ub/chats/1/messages/ \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"content": "helloo"
+}'`
+#### List Chat's messages
+`curl --request GET \
+  --url http://localhost:3000/applications/lva17pp7ub/chats/1/messages/`
+#### Search Chat's messages
+  curl --request POST \
+  --url http://localhost:3000/applications/lva17pp7ub/chats/1/messages/search/ \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"content": "ell"
+}'
 
 ## Next steps
 1. Apply linting to the whole project 
