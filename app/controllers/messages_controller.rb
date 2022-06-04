@@ -36,9 +36,8 @@ class MessagesController < ApplicationController
 
     def set_message_number
       redis_key = "message_number_for_" + @chat_id.to_s
-      $redis.watch(redis_key)
-      @message_number = $redis.incr(redis_key)
-      $redis.unwatch()
+      redis_handler = RedisHandler.new
+      @message_number = redis_handler.incr_key(redis_key)
     end
     # Only allow a list of trusted parameters through.
     def message_params

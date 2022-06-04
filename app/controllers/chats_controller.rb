@@ -30,9 +30,8 @@ class ChatsController < ApplicationController
 
     def set_chat_number
       redis_key = "chat_number_for_" + @application_id.to_s
-      $redis.watch(redis_key)
-      @chat_number = $redis.incr(redis_key)
-      $redis.unwatch()
+      redis_handler = RedisHandler.new
+      @chat_number = redis_handler.incr_key(redis_key)
     end
 
     # Only allow a list of trusted parameters through.
