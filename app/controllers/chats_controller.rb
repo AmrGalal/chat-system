@@ -17,7 +17,7 @@ class ChatsController < ApplicationController
     }
     handler = PublishHandler.new
     handler.send_message($chatQueueName, chatObject)
-    render :json => {"chat_number": @chat_number}, status: :created
+    render :json => {"number": @chat_number}, status: :created
   
   end
 

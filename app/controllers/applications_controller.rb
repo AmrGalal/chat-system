@@ -36,7 +36,7 @@ class ApplicationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_application
-      @application = Application.where(token: params[:id])
+      @application = Application.where(token: params[:id]).last
     end
 
     def set_application_token

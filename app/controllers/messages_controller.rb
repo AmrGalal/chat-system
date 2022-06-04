@@ -9,8 +9,13 @@ class MessagesController < ApplicationController
   end
 
   def search
-    @messages = Message.partial_match(params[:content], @chat_id)
-    render json: @messages.as_json(:except => [:id, :chat_id])
+    begin
+      @messages = Message.partial_match(params[:content], @chat_id)
+    rescue StandardError
+      render :json => []
+    else
+      render json: @messages.as_json(:except => [:id, :chat_id])
+    end
   end
 
   # POST /messages
@@ -22,7 +27,7 @@ class MessagesController < ApplicationController
     }
     handler = PublishHandler.new
     handler.send_message($messageQueueName, messageObject)
-    render :json => {"message_number": @message_number}, status: :created
+    render :json => {"number": @message_number}, status: :created
   end
 
   private
