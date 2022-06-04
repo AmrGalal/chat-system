@@ -4,6 +4,7 @@
 
 <ul>
     <li><a href="#disclaimer">Disclaimer</a></li>
+    <li><a href="#assumptions">Assumptions</a></li>
     <li><a href="#original-design">Original Design</a></li>
     <li><a href="#the-challenge">The Challenge</a></li>
     <li><a href="#final-design">Final Design</a></li>
@@ -18,6 +19,9 @@ I never used Ruby, RoR or RabbitMQ before and everything done in this task/repo 
 I have good knowledge in similar MVC platforms(e.g Django) and message brokers(Kafka) but they aren't exactly the same as the required technologies.
 
 Please take that into consideration.
+
+## Assumptions
+no create men bara
 
 ## Original Design
 
