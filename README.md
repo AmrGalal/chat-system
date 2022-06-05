@@ -114,12 +114,14 @@ More info about this approach can be found in their documentation [here](https:/
 }'
 
 ## Next steps
-1. Apply linting to the whole project 
-2. Add unit tests exposing success scenarios
-3. Add unit tests exposing various failure scenarios
+1. Write specs for the code
+2. Add a script in the docker compose command to wait for the DB and ES to fully get up
+3. Apply linting to the whole project 
+4. Add unit tests exposing success scenarios
+5. Add unit tests exposing various failure scenarios
    a. Make sure Application create endpoint doesn't accept value for `token` and `char_count` fields
    b. Make sure Application create/get/update endpoint doesn't return the `id` field
    c. Make sure we don't have a `DELETE` endpoint for applications since it's not required
    etc.
-4. Handle race conditions upon updating the application
+6. Handle race conditions upon updating the application
  

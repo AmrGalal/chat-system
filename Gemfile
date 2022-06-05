@@ -18,6 +18,7 @@ gem "redis"
 gem "redis-namespace"
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
+gem 'rufus-scheduler'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
