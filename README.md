@@ -106,12 +106,12 @@ More info about this approach can be found in their documentation [here](https:/
 `curl --request GET \
   --url http://localhost:3000/applications/lva17pp7ub/chats/1/messages/`
 #### Search Chat's messages
-  curl --request POST \
+  `curl --request POST \
   --url http://localhost:3000/applications/lva17pp7ub/chats/1/messages/search/ \
   --header 'Content-Type: application/json' \
   --data '{
 	"content": "ell"
-}'
+}'`
 
 ## Next steps
 1. Write specs for the code
