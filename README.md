@@ -1,4 +1,4 @@
-# Instabug Backend challenge - May 2022
+# Backend challenge - May 2022
 
 ## Table of contents
 
